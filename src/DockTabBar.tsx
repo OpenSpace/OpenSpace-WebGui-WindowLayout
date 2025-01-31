@@ -1,19 +1,19 @@
 import * as React from "react";
-import {DragDropDiv} from "./dragdrop/DragDropDiv";
+import { DragDropDiv } from "./dragdrop/DragDropDiv";
 import * as DragManager from "./dragdrop/DragManager";
-import type {TabNavListProps} from "rc-tabs/lib/TabNavList";
-import {DockContextType} from "./DockData";
+import type { TabNavListProps } from "rc-tabs/lib/TabNavList";
+import { DockContextType } from "./DockData";
 
 /**
  * @return returns true if navigation is handled in local tab move, otherwise returns false
  */
 function checkLocalTabMove(key: string, tabbar: HTMLDivElement): boolean {
-  if (key === 'ArrowLeft' || key === 'ArrowRight') {
-    let tabs = Array.from(tabbar.querySelectorAll('.dock-tab-btn'));
-    let activeTab = tabbar.querySelector('.dock-tab-active>.dock-tab-btn');
+  if (key === "ArrowLeft" || key === "ArrowRight") {
+    let tabs = Array.from(tabbar.querySelectorAll(".dock-tab-btn"));
+    let activeTab = tabbar.querySelector(".dock-tab-active>.dock-tab-btn");
     let i = tabs.indexOf(activeTab);
     if (i >= 0) {
-      if (key === 'ArrowLeft') {
+      if (key === "ArrowLeft") {
         if (i > 0) {
           (tabs[i - 1] as HTMLElement).click();
           (tabs[i - 1] as HTMLElement).focus();
@@ -31,7 +31,6 @@ function checkLocalTabMove(key: string, tabbar: HTMLDivElement): boolean {
   return false;
 }
 
-
 interface DockTabBarProps extends TabNavListProps {
   isMaximized: boolean;
   onDragStart?: DragManager.DragHandler;
@@ -42,7 +41,11 @@ interface DockTabBarProps extends TabNavListProps {
 
 export function DockTabBar(props: DockTabBarProps) {
   const {
-    onDragStart, onDragMove, onDragEnd, TabNavList, isMaximized,
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+    TabNavList,
+    isMaximized,
     ...restProps
   } = props;
 
@@ -53,9 +56,8 @@ export function DockTabBar(props: DockTabBarProps) {
     ref.current = div;
   };
 
-
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key.startsWith('Arrow')) {
+    if (e.key.startsWith("Arrow")) {
       if (!checkLocalTabMove(e.key, ref.current) && !isMaximized) {
         layout.navigateToPanel(ref.current, e.key);
       }
@@ -65,16 +67,17 @@ export function DockTabBar(props: DockTabBarProps) {
   };
 
   return (
-    <DragDropDiv onDragStartT={onDragStart}
-                 onDragMoveT={onDragMove}
-                 onDragEndT={onDragEnd}
-                 role="tablist"
-                 className="dock-bar"
-                 onKeyDown={onKeyDown}
-                 getRef={getRef}
-                 tabIndex={-1}
+    <DragDropDiv
+      onDragStartT={onDragStart}
+      onDragMoveT={onDragMove}
+      onDragEndT={onDragEnd}
+      role="tablist"
+      className="dock-bar"
+      onKeyDown={onKeyDown}
+      getRef={getRef}
+      tabIndex={-1}
     >
-      <TabNavList {...restProps}/>
+      <TabNavList {...restProps} />
     </DragDropDiv>
   );
 }

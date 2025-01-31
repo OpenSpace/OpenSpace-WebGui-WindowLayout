@@ -1,6 +1,6 @@
 import * as React from "react";
-import {DragDropDiv} from "./dragdrop/DragDropDiv";
-import {DragState} from "./dragdrop/DragManager";
+import { DragDropDiv } from "./dragdrop/DragDropDiv";
+import { DragState } from "./dragdrop/DragManager";
 
 export interface DividerChild {
   size: number;
@@ -55,7 +55,11 @@ class BoxDataCache implements DividerData {
 }
 
 // split size among children
-function spiltSize(newSize: number, oldSize: number, children: DividerChild[]): number[] {
+function spiltSize(
+  newSize: number,
+  oldSize: number,
+  children: DividerChild[]
+): number[] {
   let reservedSize = -1;
   let sizes: number[] = [];
   let requiredMinSize = 0;
@@ -80,7 +84,6 @@ function spiltSize(newSize: number, oldSize: number, children: DividerChild[]): 
 }
 
 export class Divider extends React.PureComponent<DividerProps, any> {
-
   boxData: BoxDataCache;
 
   startDrag = (e: DragState) => {
@@ -96,8 +99,8 @@ export class Divider extends React.PureComponent<DividerProps, any> {
   };
 
   dragMove2(dx: number, dy: number) {
-    let {isVertical, changeSizes} = this.props;
-    let {beforeDivider, afterDivider} = this.boxData;
+    let { isVertical, changeSizes } = this.props;
+    let { beforeDivider, afterDivider } = this.boxData;
     if (!(beforeDivider.length && afterDivider.length)) {
       // invalid input
       return;
@@ -125,8 +128,15 @@ export class Divider extends React.PureComponent<DividerProps, any> {
   }
 
   dragMoveAll(dx: number, dy: number) {
-    let {isVertical, changeSizes} = this.props;
-    let {beforeSize, beforeMinSize, afterSize, afterMinSize, beforeDivider, afterDivider} = this.boxData;
+    let { isVertical, changeSizes } = this.props;
+    let {
+      beforeSize,
+      beforeMinSize,
+      afterSize,
+      afterMinSize,
+      beforeDivider,
+      afterDivider,
+    } = this.boxData;
     let d = isVertical ? dy : dx;
     let newBeforeSize = beforeSize + d;
     let newAfterSize = afterSize - d;
@@ -141,11 +151,15 @@ export class Divider extends React.PureComponent<DividerProps, any> {
       newAfterSize = beforeSize + afterSize - beforeMinSize;
     }
 
-    changeSizes(spiltSize(newBeforeSize, beforeSize, beforeDivider).concat(spiltSize(newAfterSize, afterSize, afterDivider)));
+    changeSizes(
+      spiltSize(newBeforeSize, beforeSize, beforeDivider).concat(
+        spiltSize(newAfterSize, afterSize, afterDivider)
+      )
+    );
   }
 
   dragEnd = (e: DragState) => {
-    let {onDragEnd} = this.props;
+    let { onDragEnd } = this.props;
     this.boxData = null;
     if (onDragEnd) {
       onDragEnd();
@@ -153,13 +167,17 @@ export class Divider extends React.PureComponent<DividerProps, any> {
   };
 
   render(): React.ReactNode {
-    let {className} = this.props;
+    let { className } = this.props;
     if (!className) {
-      className = 'dock-divider';
+      className = "dock-divider";
     }
     return (
-      <DragDropDiv className={className} onDragStartT={this.startDrag} onDragMoveT={this.dragMove}
-                   onDragEndT={this.dragEnd}/>
+      <DragDropDiv
+        className={className}
+        onDragStartT={this.startDrag}
+        onDragMoveT={this.dragMove}
+        onDragEndT={this.dragEnd}
+      />
     );
   }
 }

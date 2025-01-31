@@ -1,13 +1,12 @@
 import * as React from "react";
-import {BoxData, PanelData} from "./DockData";
-import {DockPanel} from "./DockPanel";
+import { BoxData, PanelData } from "./DockData";
+import { DockPanel } from "./DockPanel";
 
 interface Props {
   boxData: BoxData;
 }
 
 export class MaxBox extends React.PureComponent<Props, any> {
-
   // a place holder panel data to be used during hide animation
   hidePanelData: PanelData;
 
@@ -15,10 +14,10 @@ export class MaxBox extends React.PureComponent<Props, any> {
     let panelData = this.props.boxData.children[0] as PanelData;
 
     if (panelData) {
-      this.hidePanelData = {...panelData, id: '', tabs: []};
+      this.hidePanelData = { ...panelData, id: "", tabs: [] };
       return (
         <div className="dock-box dock-mbox dock-mbox-show">
-          <DockPanel size={100} panelData={panelData}/>
+          <DockPanel size={100} panelData={panelData} />
         </div>
       );
     } else if (this.hidePanelData) {
@@ -27,13 +26,11 @@ export class MaxBox extends React.PureComponent<Props, any> {
       this.hidePanelData = null;
       return (
         <div className="dock-box dock-mbox dock-mbox-hide">
-          <DockPanel size={100} panelData={hidePanelData}/>
+          <DockPanel size={100} panelData={hidePanelData} />
         </div>
       );
     } else {
-      return (
-        <div className="dock-box dock-mbox dock-mbox-hide"/>
-      );
+      return <div className="dock-box dock-mbox dock-mbox-hide" />;
     }
   }
 }

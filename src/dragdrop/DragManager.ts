@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import {groupClassNames} from "../Utils";
+import { groupClassNames } from "../Utils";
 
-export type DragType = 'left' | 'right' | 'touch';
+export type DragType = "left" | "right" | "touch";
 
 interface DragDropComponent {
   element: HTMLElement;
@@ -25,14 +25,18 @@ export class DragState {
   dy = 0;
   dropped: any = false;
 
-  constructor(event: MouseEvent | TouchEvent, component: DragDropComponent, init = false) {
+  constructor(
+    event: MouseEvent | TouchEvent,
+    component: DragDropComponent,
+    init = false
+  ) {
     this.event = event;
     this.component = component;
     this._init = init;
     if (event) {
-      if (event.type.startsWith('touch')) {
+      if (event.type.startsWith("touch")) {
         let touch: Touch;
-        if (event.type === 'touchend') {
+        if (event.type === "touchend") {
           touch = (event as TouchEvent).changedTouches[0];
         } else {
           touch = (event as TouchEvent).touches[0];
@@ -42,7 +46,7 @@ export class DragState {
         this.pageY = touch.pageY;
         this.clientX = touch.clientX;
         this.clientY = touch.clientY;
-      } else if ('pageX' in event) {
+      } else if ("pageX" in event) {
         this.pageX = event.pageX;
         this.pageY = event.pageY;
         this.clientX = event.clientX;
@@ -63,19 +67,19 @@ export class DragState {
    */
   startDrag(refElement?: HTMLElement, draggingHtml?: HTMLElement | string) {
     if (!this._init) {
-      throw new Error('startDrag can only be used in onDragStart callback');
+      throw new Error("startDrag can only be used in onDragStart callback");
     }
     if (refElement === undefined) {
       refElement = this.component.element;
     }
 
     createDraggingElement(this, refElement, draggingHtml);
-    this.component.ownerDocument.body.classList.add('dock-dragging');
+    this.component.ownerDocument.body.classList.add("dock-dragging");
   }
 
-  setData(data?: {[key: string]: any}, scope?: any) {
+  setData(data?: { [key: string]: any }, scope?: any) {
     if (!this._init) {
-      throw new Error('setData can only be used in onDragStart callback');
+      throw new Error("setData can only be used in onDragStart callback");
     }
     _dataScope = scope;
     _data = data;
@@ -95,7 +99,7 @@ export class DragState {
   acceptMessage: string;
   rejected: boolean;
 
-  accept(message: string = '') {
+  accept(message: string = "") {
     this.acceptMessage = message;
     this.rejected = false;
   }
@@ -107,7 +111,10 @@ export class DragState {
   _onMove() {
     if (_data) {
       let ownerDocument = this.component.ownerDocument;
-      let searchElement = ownerDocument.elementFromPoint(this.clientX, this.clientY) as HTMLElement;
+      let searchElement = ownerDocument.elementFromPoint(
+        this.clientX,
+        this.clientY
+      ) as HTMLElement;
       let droppingHandlers: DragHandlers;
       while (searchElement && searchElement !== ownerDocument.body) {
         if (_dragListeners.has(searchElement)) {
@@ -131,17 +138,25 @@ export class DragState {
     if (_droppingHandlers && _droppingHandlers.onDropT && !canceled) {
       this.dropped = _droppingHandlers.onDropT(this);
 
-      if (this.component.dragType === 'right') {
+      if (this.component.dragType === "right") {
         // prevent the next menu event if drop handler is called on right mouse button
-        this.component.ownerDocument.addEventListener('contextmenu', preventDefault, true);
+        this.component.ownerDocument.addEventListener(
+          "contextmenu",
+          preventDefault,
+          true
+        );
         setTimeout(() => {
-          this.component.ownerDocument.removeEventListener('contextmenu', preventDefault, true);
+          this.component.ownerDocument.removeEventListener(
+            "contextmenu",
+            preventDefault,
+            true
+          );
         }, 0);
       }
     }
 
     destroyDraggingElement(this);
-    this.component.ownerDocument.body.classList.remove('dock-dragging');
+    this.component.ownerDocument.body.classList.remove("dock-dragging");
   }
 }
 
@@ -150,13 +165,11 @@ function preventDefault(e: Event) {
   e.stopPropagation();
 }
 
-
 export type DragHandler = (state: DragState) => void;
 export type DropHandler = (state: DragState) => any;
 
-
 let _dataScope: any;
-let _data: {[key: string]: any};
+let _data: { [key: string]: any };
 
 let _draggingState: DragState;
 // applying dragging style
@@ -179,7 +192,10 @@ interface DragHandlers {
   onDropT?: DropHandler;
 }
 
-let _dragListeners: WeakMap<HTMLElement, DragHandlers> = new WeakMap<HTMLElement, DragHandlers>();
+let _dragListeners: WeakMap<HTMLElement, DragHandlers> = new WeakMap<
+  HTMLElement,
+  DragHandlers
+>();
 
 export function isDragging() {
   return _draggingState != null;
@@ -201,22 +217,30 @@ let _draggingDiv: HTMLDivElement;
 let _draggingIcon: HTMLDivElement;
 
 function _createDraggingDiv(doc: Document) {
-  _draggingDiv = doc.createElement('div');
-  _draggingIcon = doc.createElement('div');
+  _draggingDiv = doc.createElement("div");
+  _draggingIcon = doc.createElement("div");
 
-  const tabGroup = (_data && 'tabGroup' in _data ? _data['tabGroup'] : undefined) as string | undefined;
+  const tabGroup = (
+    _data && "tabGroup" in _data ? _data["tabGroup"] : undefined
+  ) as string | undefined;
 
-  _draggingDiv.className = classNames(groupClassNames(tabGroup), 'dragging-layer');
+  _draggingDiv.className = classNames(
+    groupClassNames(tabGroup),
+    "dragging-layer"
+  );
 
-  _draggingDiv.appendChild(document.createElement('div')); // place holder for dragging element
+  _draggingDiv.appendChild(document.createElement("div")); // place holder for dragging element
   _draggingDiv.appendChild(_draggingIcon);
 }
 
-
-function createDraggingElement(state: DragState, refElement: HTMLElement, draggingHtml?: HTMLElement | string) {
+function createDraggingElement(
+  state: DragState,
+  refElement: HTMLElement,
+  draggingHtml?: HTMLElement | string
+) {
   _draggingState = state;
   if (refElement) {
-    refElement.classList.add('dragging');
+    refElement.classList.add("dragging");
     _refElement = refElement;
   }
   _createDraggingDiv(state.component.ownerDocument);
@@ -227,24 +251,33 @@ function createDraggingElement(state: DragState, refElement: HTMLElement, draggi
   if (draggingHtml === undefined) {
     draggingHtml = state.component.element;
   }
-  if (draggingHtml && 'outerHTML' in (draggingHtml as any)) {
+  if (draggingHtml && "outerHTML" in (draggingHtml as any)) {
     draggingWidth = (draggingHtml as HTMLElement).offsetWidth;
     draggingHeight = (draggingHtml as HTMLElement).offsetHeight;
     draggingHtml = (draggingHtml as HTMLElement).outerHTML;
   }
   if (draggingHtml) {
     _draggingDiv.firstElementChild.outerHTML = draggingHtml as string;
-    if (window.getComputedStyle(_draggingDiv.firstElementChild).backgroundColor === 'rgba(0, 0, 0, 0)') {
-      (_draggingDiv.firstElementChild as HTMLElement).style.backgroundColor
-        = window.getComputedStyle(_draggingDiv).getPropertyValue('--default-background-color');
+    if (
+      window.getComputedStyle(_draggingDiv.firstElementChild)
+        .backgroundColor === "rgba(0, 0, 0, 0)"
+    ) {
+      (_draggingDiv.firstElementChild as HTMLElement).style.backgroundColor =
+        window
+          .getComputedStyle(_draggingDiv)
+          .getPropertyValue("--default-background-color");
     }
     if (draggingWidth) {
       if (draggingWidth > 400) draggingWidth = 400;
-      (_draggingDiv.firstElementChild as HTMLElement).style.width = `${draggingWidth}px`;
+      (
+        _draggingDiv.firstElementChild as HTMLElement
+      ).style.width = `${draggingWidth}px`;
     }
     if (draggingHeight) {
       if (draggingHeight > 300) draggingHeight = 300;
-      (_draggingDiv.firstElementChild as HTMLElement).style.height = `${draggingHeight}px`;
+      (
+        _draggingDiv.firstElementChild as HTMLElement
+      ).style.height = `${draggingHeight}px`;
     }
   }
 
@@ -262,18 +295,17 @@ function moveDraggingElement(state: DragState) {
   _draggingDiv.style.top = `${state.pageY}px`;
 
   if (state.rejected) {
-    _draggingIcon.className = 'drag-accept-reject';
+    _draggingIcon.className = "drag-accept-reject";
   } else if (state.acceptMessage) {
     _draggingIcon.className = state.acceptMessage;
   } else {
-    _draggingIcon.className = '';
+    _draggingIcon.className = "";
   }
 }
 
-
 export function destroyDraggingElement(e: DragState) {
   if (_refElement) {
-    _refElement.classList.remove('dragging');
+    _refElement.classList.remove("dragging");
     _refElement = null;
   }
   if (_draggingDiv) {
@@ -292,7 +324,6 @@ export function destroyDraggingElement(e: DragState) {
   }
 }
 
-
 let _dragStateListener: Set<(scope: any) => void> = new Set();
 
 export function addDragStateListener(callback: (scope: any) => void) {
@@ -304,10 +335,22 @@ export function removeDragStateListener(callback: (scope: any) => void) {
 }
 
 // work around for drag scroll issue on IOS
-if (typeof window !== 'undefined' && window.navigator && window.navigator.platform && /iP(ad|hone|od)/.test(window.navigator.platform)) {
-  document.addEventListener('touchmove', (e: TouchEvent) => {
-    if (e.touches.length === 1 && document.body.classList.contains('dock-dragging')) {
-      e.preventDefault();
-    }
-  }, {passive: false});
+if (
+  typeof window !== "undefined" &&
+  window.navigator &&
+  window.navigator.platform &&
+  /iP(ad|hone|od)/.test(window.navigator.platform)
+) {
+  document.addEventListener(
+    "touchmove",
+    (e: TouchEvent) => {
+      if (
+        e.touches.length === 1 &&
+        document.body.classList.contains("dock-dragging")
+      ) {
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
 }
