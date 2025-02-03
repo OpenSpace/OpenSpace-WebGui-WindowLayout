@@ -311,17 +311,16 @@ export class DockPanel extends React.PureComponent<Props, State> {
     let cls = `dock-panel ${panelClass ? panelClass : ""}${
       dropFromPanel ? " dock-panel-dropping" : ""
     }${draggingHeader ? " dragging" : ""}`;
-    let flex = 1;
+    // anden88 2025-02-03: Again we don't want normal windows to adjust its size so we
+    // remove the flex and only add it on specific ones we determine it necessary on.
+    let flex = 0;
     if (isHBox && widthFlex != null) {
       flex = widthFlex;
     } else if (isVBox && heightFlex != null) {
       flex = heightFlex;
     }
-    let flexGrow = flex * size;
-    let flexShrink = flex * 1000000;
-    if (flexShrink < 1) {
-      flexShrink = 1;
-    }
+    let flexGrow = flex;
+    let flexShrink = flex;
     let style: React.CSSProperties = {
       minWidth,
       minHeight,

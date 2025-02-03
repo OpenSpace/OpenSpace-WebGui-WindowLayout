@@ -102,7 +102,10 @@ export class DockBox extends React.PureComponent<Props, any> {
       }
     }
     let cls: string;
-    let flex = 1;
+    // anden88 2025-02-03: We don't want every window to adjust its size so we'll use the
+    // widthFlex and heightFlex properties on specific windows e.g., the headless
+    // (OpenSpace view) to adapt its size instead
+    let flex = 0;
     if (mode === "vertical") {
       cls = "dock-box dock-vbox";
       if (widthFlex != null) {
@@ -115,8 +118,8 @@ export class DockBox extends React.PureComponent<Props, any> {
         flex = heightFlex;
       }
     }
-    let flexGrow = flex * size;
-    let flexShrink = flex * 1000000;
+    let flexGrow = flex;
+    let flexShrink = flex;
     if (flexShrink < 1) {
       flexShrink = 1;
     }

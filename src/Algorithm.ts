@@ -255,8 +255,11 @@ export function dockPanelToPanel(
       if (afterPanel) {
         ++pos;
       }
+      // anden88 2025-02-03: its not clear what this is trying to achieve, but I figured
+      // doing half the size is visually better than having it take up equal space since
+      // we've moved away from using flex-grow as this insanely high number to adjust size
       // HINT: The size remains the same, preventing flex-grow less than 1
-      newPanel.size = panel.size;
+      newPanel.size ?? panel.size / 2;
       newBox.children.splice(pos, 0, newPanel);
     } else {
       let newChildBox: BoxData = { mode: dockMode, children: [] };
@@ -267,7 +270,6 @@ export function dockPanelToPanel(
         newChildBox.children = [newPanel, panel];
       }
       panel.parent = newChildBox;
-      panel.size = 200;
       newPanel.parent = newChildBox;
       newPanel.size = 200;
       newBox.children[pos] = newChildBox;
@@ -325,7 +327,10 @@ export function dockPanelToBox(
       if (afterPanel) {
         pos = newBox.children.length;
       }
-      newPanel.size = box.size * 0.3;
+      // anden88 2025-02-03: We keep the size of the panel if it has any, otherwise we
+      // fall back to previous behaviour. Tbh I'm not sure what to do about `box` size
+      // but it seems fine to keep it at 70%...
+      newPanel.size ?? box.size * 0.3;
       box.size *= 0.7;
 
       newBox.children.splice(pos, 0, newPanel);
@@ -340,8 +345,8 @@ export function dockPanelToBox(
       } else {
         newDockBox.children = [newPanel, newBox];
       }
-      newBox.size = 280;
-      newPanel.size = 120;
+      newBox.size = box.size;
+      newPanel.size ?? 250;
       return replaceBox(layout, box, newDockBox);
     }
   } else if (box === layout.maxbox) {

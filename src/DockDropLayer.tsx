@@ -234,23 +234,24 @@ export class DockDropLayer extends React.PureComponent<
 
       let box = panelData.parent;
       if (box && box.children.length > 1) {
+        /* Disable the deeper drop, i.e., when placing an item to the edge */
         // deeper drop
-        DockDropLayer.addDepthSquare(
-          children,
-          box.mode,
-          panelData,
-          panelElement,
-          1
-        );
-        if (box.parent) {
-          DockDropLayer.addDepthSquare(
-            children,
-            box.parent.mode,
-            panelData,
-            panelElement,
-            2
-          );
-        }
+        // DockDropLayer.addDepthSquare(
+        //   children,
+        //   box.mode,
+        //   panelData,
+        //   panelElement,
+        //   1
+        // );
+        // if (box.parent) {
+        //   DockDropLayer.addDepthSquare(
+        //     children,
+        //     box.parent.mode,
+        //     panelData,
+        //     panelElement,
+        //     2
+        //   );
+        // }
       }
     }
 
