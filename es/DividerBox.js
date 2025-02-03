@@ -33,17 +33,21 @@ export class DividerBox extends React.PureComponent {
             }
             let dividerChildren = [];
             for (let i = 0; i < length; ++i) {
-                if (mode === 'vertical') {
-                    dividerChildren.push({ size: nodes[i * 2].offsetHeight });
+                if (mode === "vertical") {
+                    dividerChildren.push({
+                        size: nodes[i * 2].offsetHeight,
+                    });
                 }
                 else {
-                    dividerChildren.push({ size: nodes[i * 2].offsetWidth });
+                    dividerChildren.push({
+                        size: nodes[i * 2].offsetWidth,
+                    });
                 }
             }
             return {
                 element: this._ref,
                 beforeDivider: dividerChildren.slice(0, idx),
-                afterDivider: dividerChildren.slice(idx)
+                afterDivider: dividerChildren.slice(idx),
             };
         };
         this.changeSizes = (sizes) => {
@@ -51,7 +55,7 @@ export class DividerBox extends React.PureComponent {
             let nodes = this._ref.childNodes;
             if (nodes.length === sizes.length * 2 - 1) {
                 for (let i = 0; i < sizes.length; ++i) {
-                    if (mode === 'vertical') {
+                    if (mode === "vertical") {
                         nodes[i * 2].style.height = `${sizes[i]}px`;
                     }
                     else {
@@ -64,9 +68,9 @@ export class DividerBox extends React.PureComponent {
     }
     render() {
         let _a = this.props, { children, mode, className } = _a, others = __rest(_a, ["children", "mode", "className"]);
-        let isVertical = mode === 'vertical';
+        let isVertical = mode === "vertical";
         let childrenRender = [];
-        if (Array.isArray((children))) {
+        if (Array.isArray(children)) {
             for (let i = 0; i < children.length; ++i) {
                 if (i > 0) {
                     childrenRender.push(React.createElement(Divider, { idx: i, key: i, isVertical: isVertical, getDividerData: this.getDividerData, changeSizes: this.changeSizes }));
@@ -78,11 +82,11 @@ export class DividerBox extends React.PureComponent {
             childrenRender = children;
         }
         let cls;
-        if (mode === 'vertical') {
-            cls = 'divider-box dock-vbox';
+        if (mode === "vertical") {
+            cls = "divider-box dock-vbox";
         }
         else {
-            cls = 'divider-box dock-hbox';
+            cls = "divider-box dock-hbox";
         }
         if (className) {
             cls = `${cls} ${className}`;

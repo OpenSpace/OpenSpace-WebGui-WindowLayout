@@ -1,4 +1,4 @@
-export declare type DragType = 'left' | 'right' | 'touch';
+export declare type DragType = "left" | "right" | "touch";
 interface DragDropComponent {
     element: HTMLElement;
     ownerDocument: Document;

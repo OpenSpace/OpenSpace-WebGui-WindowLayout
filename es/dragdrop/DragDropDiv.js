@@ -40,14 +40,16 @@ export class DragDropDiv extends React.PureComponent {
         this.gesturing = false;
         this.onPointerDown = (e) => {
             let nativeTarget = e.nativeEvent.target;
-            if (nativeTarget instanceof HTMLInputElement || nativeTarget instanceof HTMLTextAreaElement || nativeTarget.classList.contains('drag-ignore')) {
+            if (nativeTarget instanceof HTMLInputElement ||
+                nativeTarget instanceof HTMLTextAreaElement ||
+                nativeTarget.classList.contains("drag-ignore")) {
                 // ignore drag from input element
                 return;
             }
             let { onDragStartT, onGestureStartT, onGestureMoveT, useRightButtonDragT } = this.props;
             let event = e.nativeEvent;
             this.cancel();
-            if (event.type === 'touchstart') {
+            if (event.type === "touchstart") {
                 // check single or double fingure touch
                 if (event.touches.length === 1) {
                     if (onDragStartT) {
@@ -149,7 +151,7 @@ export class DragDropDiv extends React.PureComponent {
             }
         };
         this.onKeyDown = (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === "Escape") {
                 this.cancel();
             }
         };
@@ -172,19 +174,19 @@ export class DragDropDiv extends React.PureComponent {
         }
     }
     addDragListeners(event) {
-        if (event.type === 'touchstart') {
-            this.ownerDocument.addEventListener('touchmove', this.onTouchMove);
-            this.ownerDocument.addEventListener('touchend', this.onDragEnd);
-            this.dragType = 'touch';
+        if (event.type === "touchstart") {
+            this.ownerDocument.addEventListener("touchmove", this.onTouchMove);
+            this.ownerDocument.addEventListener("touchend", this.onDragEnd);
+            this.dragType = "touch";
         }
         else {
-            this.ownerDocument.addEventListener('mousemove', this.onMouseMove);
-            this.ownerDocument.addEventListener('mouseup', this.onDragEnd);
+            this.ownerDocument.addEventListener("mousemove", this.onMouseMove);
+            this.ownerDocument.addEventListener("mouseup", this.onDragEnd);
             if (event.button === 2) {
-                this.dragType = 'right';
+                this.dragType = "right";
             }
             else {
-                this.dragType = 'left';
+                this.dragType = "left";
             }
         }
         this.waitingMove = true;
@@ -208,13 +210,13 @@ export class DragDropDiv extends React.PureComponent {
             return false;
         }
         state._onMove();
-        this.ownerDocument.addEventListener('keydown', this.onKeyDown);
+        this.ownerDocument.addEventListener("keydown", this.onKeyDown);
         return true;
     }
     addGestureListeners(event) {
-        this.ownerDocument.addEventListener('touchmove', this.onGestureMove);
-        this.ownerDocument.addEventListener('touchend', this.onGestureEnd);
-        this.ownerDocument.addEventListener('keydown', this.onKeyDown);
+        this.ownerDocument.addEventListener("touchmove", this.onGestureMove);
+        this.ownerDocument.addEventListener("touchend", this.onGestureEnd);
+        this.ownerDocument.addEventListener("keydown", this.onKeyDown);
         this.gesturing = true;
         this.waitingMove = true;
     }
@@ -232,7 +234,8 @@ export class DragDropDiv extends React.PureComponent {
         let rect = baseElement.getBoundingClientRect();
         this.scaleX = baseElement.offsetWidth / Math.round(rect.width);
         this.scaleY = baseElement.offsetHeight / Math.round(rect.height);
-        this.baseDis = Math.sqrt(Math.pow(this.baseX - this.baseX2, 2) + Math.pow(this.baseY - this.baseY2, 2));
+        this.baseDis = Math.sqrt(Math.pow(this.baseX - this.baseX2, 2) +
+            Math.pow(this.baseY - this.baseY2, 2));
         this.baseAng = Math.atan2(this.baseY2 - this.baseY, this.baseX2 - this.baseX);
         let state = new GestureState(event, this, true);
         if (onGestureStartT(state)) {
@@ -250,20 +253,20 @@ export class DragDropDiv extends React.PureComponent {
     }
     removeListeners() {
         if (this.gesturing) {
-            this.ownerDocument.removeEventListener('touchmove', this.onGestureMove);
-            this.ownerDocument.removeEventListener('touchend', this.onGestureEnd);
+            this.ownerDocument.removeEventListener("touchmove", this.onGestureMove);
+            this.ownerDocument.removeEventListener("touchend", this.onGestureEnd);
         }
         else if (this.listening) {
-            if (this.dragType === 'touch') {
-                this.ownerDocument.removeEventListener('touchmove', this.onTouchMove);
-                this.ownerDocument.removeEventListener('touchend', this.onDragEnd);
+            if (this.dragType === "touch") {
+                this.ownerDocument.removeEventListener("touchmove", this.onTouchMove);
+                this.ownerDocument.removeEventListener("touchend", this.onDragEnd);
             }
             else {
-                this.ownerDocument.removeEventListener('mousemove', this.onMouseMove);
-                this.ownerDocument.removeEventListener('mouseup', this.onDragEnd);
+                this.ownerDocument.removeEventListener("mousemove", this.onMouseMove);
+                this.ownerDocument.removeEventListener("mouseup", this.onDragEnd);
             }
         }
-        this.ownerDocument.removeEventListener('keydown', this.onKeyDown);
+        this.ownerDocument.removeEventListener("keydown", this.onKeyDown);
         this.listening = false;
         this.gesturing = false;
     }
@@ -286,17 +289,17 @@ export class DragDropDiv extends React.PureComponent {
                 className = `${className} drag-initiator`;
             }
             else {
-                className = 'drag-initiator';
+                className = "drag-initiator";
             }
         }
         return (React.createElement("div", Object.assign({ ref: this._getRef, className: className }, others, { onMouseDown: onMouseDown, onTouchStart: onTouchDown }), children));
     }
     componentDidUpdate(prevProps) {
         let { onDragOverT, onDragEndT, onDragLeaveT } = this.props;
-        if (this.element
-            && (prevProps.onDragOverT !== onDragOverT
-                || prevProps.onDragLeaveT !== onDragLeaveT
-                || prevProps.onDragEndT !== onDragEndT)) {
+        if (this.element &&
+            (prevProps.onDragOverT !== onDragOverT ||
+                prevProps.onDragLeaveT !== onDragLeaveT ||
+                prevProps.onDragEndT !== onDragEndT)) {
             if (onDragOverT) {
                 DragManager.addHandlers(this.element, this.props);
             }

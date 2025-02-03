@@ -1,5 +1,5 @@
-import * as React from 'react';
-import classNames from 'classnames';
+import * as React from "react";
+import classNames from "classnames";
 import { DockContextType } from "./DockData";
 export default class DockTabPane extends React.PureComponent {
     constructor() {
@@ -35,12 +35,12 @@ export default class DockTabPane extends React.PureComponent {
         const mergedStyle = {};
         if (!active) {
             if (animated) {
-                mergedStyle.visibility = 'hidden';
+                mergedStyle.visibility = "hidden";
                 mergedStyle.height = 0;
-                mergedStyle.overflowY = 'hidden';
+                mergedStyle.overflowY = "hidden";
             }
             else {
-                mergedStyle.display = 'none';
+                mergedStyle.display = "none";
             }
         }
         // when cached == undefined, it will still cache the children inside tabs component, but not across whole dock layout

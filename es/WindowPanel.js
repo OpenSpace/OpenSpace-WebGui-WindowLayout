@@ -2,7 +2,7 @@ import * as React from "react";
 import NewWindow from "rc-new-window";
 import { DockContextType } from "./DockData";
 import { DockPanel } from "./DockPanel";
-import { mapElementToScreenRect, mapWindowToElement } from "rc-new-window/lib/ScreenPosition";
+import { mapElementToScreenRect, mapWindowToElement, } from "rc-new-window/lib/ScreenPosition";
 export class WindowPanel extends React.PureComponent {
     constructor() {
         super(...arguments);
@@ -21,7 +21,7 @@ export class WindowPanel extends React.PureComponent {
                 panelData.w = rect.width;
                 panelData.h = rect.height;
             }
-            this.context.dockMove(panelData, null, 'float');
+            this.context.dockMove(panelData, null, "float");
         };
         this.initPopupInnerRect = () => {
             let { panelData } = this.props;
@@ -29,16 +29,16 @@ export class WindowPanel extends React.PureComponent {
                 left: panelData.x,
                 top: panelData.y,
                 width: panelData.w,
-                height: panelData.h
+                height: panelData.h,
             });
         };
     }
     render() {
         let { panelData } = this.props;
         let { x, y, w, h } = panelData;
-        return React.createElement(NewWindow, { copyStyles: true, onOpen: this.onOpen, onClose: this.onUnload, onBlock: this.onUnload, initPopupInnerRect: this.initPopupInnerRect, width: w, height: h },
-            React.createElement("div", { className: 'dock-wbox' },
-                React.createElement(DockPanel, { size: panelData.size, panelData: panelData, key: panelData.id })));
+        return (React.createElement(NewWindow, { copyStyles: true, onOpen: this.onOpen, onClose: this.onUnload, onBlock: this.onUnload, initPopupInnerRect: this.initPopupInnerRect, width: w, height: h },
+            React.createElement("div", { className: "dock-wbox" },
+                React.createElement(DockPanel, { size: panelData.size, panelData: panelData, key: panelData.id }))));
     }
 }
 WindowPanel.contextType = DockContextType;

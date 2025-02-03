@@ -4,7 +4,7 @@ export class MaxBox extends React.PureComponent {
     render() {
         let panelData = this.props.boxData.children[0];
         if (panelData) {
-            this.hidePanelData = Object.assign(Object.assign({}, panelData), { id: '', tabs: [] });
+            this.hidePanelData = Object.assign(Object.assign({}, panelData), { id: "", tabs: [] });
             return (React.createElement("div", { className: "dock-box dock-mbox dock-mbox-show" },
                 React.createElement(DockPanel, { size: 100, panelData: panelData })));
         }
@@ -16,7 +16,7 @@ export class MaxBox extends React.PureComponent {
                 React.createElement(DockPanel, { size: 100, panelData: hidePanelData })));
         }
         else {
-            return (React.createElement("div", { className: "dock-box dock-mbox dock-mbox-hide" }));
+            return React.createElement("div", { className: "dock-box dock-mbox dock-mbox-hide" });
         }
     }
 }
