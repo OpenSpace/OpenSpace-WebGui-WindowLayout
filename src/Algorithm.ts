@@ -271,7 +271,8 @@ export function dockPanelToPanel(
       }
       panel.parent = newChildBox;
       newPanel.parent = newChildBox;
-      newPanel.size = 200;
+      // anden88 2025-02-03: Increasing the default size a little
+      newPanel.size = 300;
       newBox.children[pos] = newChildBox;
       newChildBox.parent = newBox;
     }
@@ -600,7 +601,9 @@ export function fixLayoutData(
       }
     }
     if (!(d.size >= 0)) {
-      d.size = 200;
+      // anden88 2025-02-03: Adjusting the default size if size does not exist e.g.,
+      // when a panel is spawned as floating.
+      d.size = 300;
     }
     d.minWidth = 0;
     d.minHeight = 0;
@@ -786,7 +789,9 @@ export function fixLayoutData(
       id: "+0",
       group: placeHolderStyle,
       panelLock: {},
-      size: 200,
+      // anden88 2025-02-03: unclear when this will be hit but increasing size since 300
+      // is our new "default" size.
+      size: 300,
       tabs: [],
     };
     newPanel.parent = layout.dockbox;
